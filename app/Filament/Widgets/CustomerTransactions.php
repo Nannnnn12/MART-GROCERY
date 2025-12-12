@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Transaction;
+use App\Filament\Resources\Transactions\TransactionResource;
+use Filament\Actions\Action;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
+
+class CustomerTransactions extends BaseWidget
+{
+    protected static bool $isDiscovered = false;
+
+    public ?int $customerId = null;
+
+    public function mount(?int $customerId = null): void
+    {
+        $this->customerId = $customerId;
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(
+                Transaction::query()->where('customer_id', $this->customerId)->latest()
+            )
+            ->columns([
+                Tables\Columns\TextColumn::make('order_code')
+                    ->label('Order Code')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total')
+                    ->label('Total')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'processing' => 'info',
+                        'shipped' => 'primary',
+                        'delivered' => 'success',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Date')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->paginated(10)
+            ->actions([
+                Action::make('view')
+                    ->label('Lihat')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn (Transaction $record): string => TransactionResource::getUrl('edit', ['record' => $record])),
+            ]);
+    }
+}

@@ -1,0 +1,116 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.swiper-wrapper {
+    display: flex !important;
+}
+
+.mySwiper .swiper-slide {
+    width: 100% !important;
+    flex-shrink: 0 !important;
+}
+
+/* Pagination (titik) warna kuning */
+.swiper-pagination-bullet {
+    background: #ffffff !important;
+    /* kuning */
+    opacity: 0.6;
+}
+
+.swiper-pagination-bullet-active {
+    background: #ffffff !important;
+    /* kuning lebih terang */
+    opacity: 1;
+}
+
+/* Pastikan tombol tidak terpotong dan berada di dalam area slider */
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+    top: 57%;
+    /* posisikan di tengah vertikal */
+    transform: translateY(-50%);
+    /* perbaiki posisi */
+    z-index: 20;
+    background-color: white !important;
+    border-radius: 9999px;
+    width: 48px !important;
+    height: 48px !important;
+}
+
+/* Geser sedikit ke pinggir, tapi tidak keluar area overflow */
+.mySwiper .swiper-button-next {
+    right: 10px !important;
+}
+
+.mySwiper .swiper-button-prev {
+    left: 10px !important;
+}
+
+/* Icon panah kuning */
+.mySwiper .swiper-button-next::after,
+.mySwiper .swiper-button-prev::after {
+    color: #ffff !important;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.categoriesSwiper {
+    overflow: visible !important;
+    /* supaya animasi scale tidak terpotong */
+    padding-top: 20px;
+    /* beri ruang atas */
+    padding-bottom: 20px;
+    /* beri ruang bawah */
+}
+
+.categoriesSwiper .swiper-slide {
+    height: auto !important;
+    /* agar slide menyesuaikan tinggi card */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.categoriesSwiper {
+    overflow: hidden !important;
+}
+
+.categories-next::after,
+.categories-prev::after {
+    display: none !important;
+}
+
+.no-spinner::-webkit-inner-spin-button,
+  .no-spinner::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  /* Hilangkan spinner di Firefox */
+  .no-spinner {
+      -moz-appearance: textfield;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.prose table, .prose td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+.prose th {
+    background-color: #04f35b;
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
