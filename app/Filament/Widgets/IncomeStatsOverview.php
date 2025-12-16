@@ -20,28 +20,27 @@ class IncomeStatsOverview extends StatsOverviewWidget
     {
         $today     = now()->startOfDay();
 
-        $incomeToday  = Transaction::whereDate('created_at', now())->sum('total');
-
-        $totalSales   = Transaction::sum('total');
-        $totalTrans   = Transaction::count();
-        $totalProductsSold = TransactionItem::sum('quantity');
+        $incomeToday  = Transaction::where('status', 'delivered')->whereDate('created_at', now())->sum('total');
+        $incomeThisMonth = Transaction::where('status', 'delivered')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
+        $incomeThisYear = Transaction::where('status', 'delivered')->whereYear('created_at', now()->year)->sum('total');
+        $totalSales   = Transaction::where('status', 'delivered')->sum('total');
 
         return [
             Stat::make('Income Hari Ini', 'Rp ' . number_format($incomeToday, 0, ',', '.'))
                 ->icon('heroicon-o-banknotes')
                 ->color('success'),
 
-            Stat::make('Total Sales', 'Rp ' . number_format($totalSales, 0, ',', '.'))
+            Stat::make('Income Bulan Ini', 'Rp ' . number_format($incomeThisMonth, 0, ',', '.'))
+                ->icon('heroicon-o-calendar-days')
+                ->color('info'),
+
+            Stat::make('Income Tahun Ini', 'Rp ' . number_format($incomeThisYear, 0, ',', '.'))
                 ->icon('heroicon-o-chart-bar')
                 ->color('primary'),
 
-            Stat::make('Total Transaksi', $totalTrans)
-                ->icon('heroicon-o-shopping-cart')
-                ->color('primary'),
-
-            Stat::make('Total Produk Terjual', number_format($totalProductsSold, 0, ',', '.'))
-                ->icon('heroicon-o-cube')
-                ->color('warning'),
+            Stat::make('Total Pendapatan', 'Rp ' . number_format($totalSales, 0, ',', '.'))
+                ->icon('heroicon-o-currency-dollar')
+                ->color('success'),
         ];
     }
 }

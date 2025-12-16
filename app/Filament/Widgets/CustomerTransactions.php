@@ -6,7 +6,9 @@ use App\Models\Transaction;
 use App\Filament\Resources\Transactions\TransactionResource;
 use Filament\Actions\Action;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class CustomerTransactions extends BaseWidget
@@ -52,6 +54,24 @@ class CustomerTransactions extends BaseWidget
             ])
             ->defaultSort('created_at', 'desc')
             ->paginated(10)
+            ->filters([
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'shipped' => 'Shipped',
+                        'delivered' => 'Delivered',
+                        'cancelled' => 'Cancelled',
+                        'belum_dibayar' => 'Belum Dibayar',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $status): Builder => $query->where('status', $status),
+                        );
+                    }),
+            ])
             ->actions([
                 Action::make('view')
                     ->label('Lihat')

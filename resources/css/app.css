@@ -17,6 +17,7 @@
 .mySwiper .swiper-slide {
     width: 100% !important;
     flex-shrink: 0 !important;
+    position: relative;
 }
 
 /* Pagination (titik) warna kuning */
@@ -35,15 +36,23 @@
 /* Pastikan tombol tidak terpotong dan berada di dalam area slider */
 .mySwiper .swiper-button-next,
 .mySwiper .swiper-button-prev {
-    top: 57%;
-    /* posisikan di tengah vertikal */
+    top: 50%;
     transform: translateY(-50%);
-    /* perbaiki posisi */
     z-index: 20;
     background-color: white !important;
     border-radius: 9999px;
     width: 48px !important;
     height: 48px !important;
+}
+
+/* Mobile fix */
+@media (max-width: 640px) {
+
+    .mySwiper .swiper-button-next,
+    .mySwiper .swiper-button-prev {
+        top: 55%;
+        /* geser sedikit ke bawah */
+    }
 }
 
 /* Geser sedikit ke pinggir, tapi tidak keluar area overflow */
@@ -90,27 +99,29 @@
 }
 
 .no-spinner::-webkit-inner-spin-button,
-  .no-spinner::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-  }
+.no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-  /* Hilangkan spinner di Firefox */
-  .no-spinner {
-      -moz-appearance: textfield;
-  }
+/* Hilangkan spinner di Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+}
 
-  .prose table {
+.prose table {
     width: 100%;
     border-collapse: collapse;
 }
-.prose table, .prose td {
+
+.prose table,
+.prose td {
     border: 1px solid #ccc;
     padding: 8px;
 }
+
 .prose th {
     background-color: #04f35b;
     border: 1px solid #ccc;
     padding: 8px;
 }
-

@@ -17,7 +17,7 @@ class OrdersChart extends ChartWidget
 
     public function getColumnSpan(): int
     {
-        return 2;
+        return 1;
     }
 
     protected function getData(): array

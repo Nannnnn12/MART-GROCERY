@@ -14,23 +14,23 @@ class ListTransactions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+           
         ];
     }
 
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make('All'),
-            'pending' => Tab::make('Pending')
+            'all' => Tab::make('Semua'),
+            'pending' => Tab::make('Menunggu')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'pending')),
-            'processing' => Tab::make('Processing')
+            'processing' => Tab::make('Diproses')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'processing')),
-            'shipped' => Tab::make('Shipped')
+            'shipped' => Tab::make('Dikirim')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'shipped')),
-            'delivered' => Tab::make('Delivered')
+            'delivered' => Tab::make('Diterima')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'delivered')),
-            'cancelled' => Tab::make('Cancelled')
+            'cancelled' => Tab::make('Dibatalkan')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'cancelled')),
             'belum_dibayar' => Tab::make('Belum Dibayar')
                 ->modifyQueryUsing(fn ($query) => $query->where('status', 'belum_dibayar')),

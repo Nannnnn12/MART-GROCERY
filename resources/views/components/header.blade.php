@@ -74,7 +74,7 @@
 
         <!-- Search Bar -->
         <div
-            class="search-mobile flex flex-1 max-w-7xl border border-emerald-400 rounded-md overflow-hidden hover:shadow-md transition-all duration-200">
+            class="search-mobile hidden md:flex flex-1 max-w-7xl border border-emerald-400 rounded-md overflow-hidden hover:shadow-md transition-all duration-200">
 
             <input type="text" placeholder="Search for items..."
                 class="flex-1 px-2 sm:px-4 focus:outline-none focus:ring-0 text-gray-600 h-10 sm:h-12 text-sm sm:text-base md:text-lg">
@@ -93,7 +93,7 @@
 
                 @auth
                     <a href="{{ route('cart.index') }}"
-                        class="relative flex items-center gap-1 hover:text-blue-500 hover:scale-105 transition-all duration-200 cursor-pointer">
+                        class="relative hidden md:flex items-center gap-1 hover:text-blue-500 hover:scale-105 transition-all duration-200 cursor-pointer">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -114,19 +114,19 @@
                 <div class="relative">
                     <div
                         class="flex items-center gap-1 hover:text-gray-900 hover:scale-105 transition-all duration-200 cursor-pointer account-dropdown-toggle">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                         Account
                         @if (auth()->check() && is_null(auth()->user()->phone_number))
                             <span
-                                class="absolute left-1/2 top-10 -translate-x-1/2
+                                class="absolute left-1/2 top-8 sm:top-8 -translate-x-1/2
                bg-yellow-300 text-black font-semibold
-               text-[11px] px-3 py-[6px]
+               text-[10px] sm:text-[11px] px-2 sm:px-3 py-[4px] sm:py-[6px]
                rounded-full whitespace-nowrap
                shadow-md animate-pulse">
-                                Lengkapi Nomor WhatsApp Anda
+                                Lengkapi Identitas Anda
                             </span>
                         @endif
 
@@ -259,6 +259,43 @@
                             d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="px-4 pb-4">
+                <form method="GET" action="{{ route('products.index') }}">
+                    <div class="flex border border-white/30 rounded-md overflow-hidden">
+                        <input type="text" name="search" placeholder="Search for items..."
+                            class="flex-1 px-3 focus:outline-none focus:ring-0 text-gray-700 h-10 text-sm">
+                        <button type="submit" class="px-3 text-gray-700 hover:bg-white/20 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Cart and Account -->
+            <div class="px-4 pb-4 space-y-3">
+                @auth
+                    <a href="{{ route('cart.index') }}"
+                        class="flex items-center gap-1 sm:gap-2 text-white hover:text-yellow-200 hover:scale-105 transition-all duration-200 text-sm sm:text-base">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13v8a2 2 0 002 2h10a2 2 0 002-2v-3">
+                            </path>
+                        </svg>
+                        <span class="text-xs sm:text-sm">Cart</span>
+                        @php
+                            $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
+                        @endphp
+                        @if ($cartCount > 0)
+                            <span class="bg-white text-green-600 text-[10px] sm:text-xs px-1 sm:px-1.5 rounded-full">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                @endauth
             </div>
 
             <!-- Menu Items -->

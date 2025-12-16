@@ -21,27 +21,29 @@
 
                 <!-- Modern Navigation Buttons -->
                 <div
-                    class="swiper-button-next absolute top-1/2 -left-12 transform -translate-y-1/2 z-20
-            opacity-0 pointer-events-none
-            group-hover:opacity-100 group-hover:pointer-events-auto
-            transition duration-300
-            !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70">
+                    class="swiper-button-next absolute inset-y-0 -right-12 z-20
+    opacity-0 pointer-events-none
+    group-hover:opacity-100 group-hover:pointer-events-auto
+    transition duration-300
+    !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </div>
+
                 <div
-                    class="swiper-button-prev absolute top-1/2 -left-12 transform -translate-y-1/2 z-20
-        opacity-0 pointer-events-none
-        group-hover:opacity-100 group-hover:pointer-events-auto
-        transition duration-300
-        !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70">
+                    class="swiper-button-prev absolute inset-y-0 -left-12 z-20
+    opacity-0 pointer-events-none
+    group-hover:opacity-100 group-hover:pointer-events-auto
+    transition duration-300
+    !w-12 !h-12 !rounded-full !bg-white/40 !shadow-lg !backdrop-blur-md hover:!bg-white/70">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
                 </div>
+
             </div>
 
             <div class="absolute bottom-0 left-0 w-full leading-[0]">
@@ -61,12 +63,13 @@
                     <h2 class="text-3xl font-bold text-gray-800 mb-4">Categories</h2>
                 </div>
 
-                <div class="swiper categoriesSwiper overflow-hidden mx-auto h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[400px] relative">
+                <div
+                    class="swiper categoriesSwiper overflow-hidden mx-auto h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[400px] relative">
                     <div class="swiper-wrapper">
                         @foreach ($categories as $category)
                             <div class="swiper-slide">
-                <a href="{{ route('products.index', ['category' => $category->id]) }}"
-                    class="group flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm bg-gradient-to-br from-white via-white to-gray-50 rounded-2xl w-32 sm:w-36 md:w-44 lg:w-52 xl:w-60 h-48 sm:h-52 md:h-56 lg:h-64 xl:h-72 p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 mx-2 sm:mx-3 md:mx-4
+                                <a href="{{ route('products.index', ['category' => $category->id]) }}"
+                                    class="group flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm bg-gradient-to-br from-white via-white to-gray-50 rounded-2xl w-32 sm:w-36 md:w-44 lg:w-52 xl:w-60 h-48 sm:h-52 md:h-56 lg:h-64 xl:h-72 p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 mx-2 sm:mx-3 md:mx-4
                    shadow-lg hover:shadow-2xl hover:ring-4 hover:ring-green-300/50 hover:scale-105 hover:-translate-y-1
                    border border-white/20
                    transition-all duration-300 ease-out">
@@ -88,7 +91,8 @@
                                         class="mt-2 sm:mt-3 text-gray-800 font-bold text-sm sm:text-base md:text-lg lg:text-xl text-center group-hover:text-green-700 transition-colors duration-300 leading-tight">
                                         {{ $category->category_name }}
                                     </span>
-                                    <span class="text-xs sm:text-sm text-gray-500 text-center group-hover:text-gray-600 transition-colors duration-300">
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-500 text-center group-hover:text-gray-600 transition-colors duration-300">
                                         {{ $category->products_count }} items
                                     </span>
                                 </a>
@@ -142,19 +146,20 @@
                     <h2 class="text-3xl font-bold text-gray-800 mb-4">Popular Products</h2>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-5">
                     @foreach ($products as $product)
+                        <!-- Product Card -->
                         <div
-                            class="bg-white rounded-xl p-5 shadow-sm ring-0 hover:ring-1 hover:ring-green-300 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 overflow-hidden relative">
+                            class="bg-white rounded-xl p-3 sm:p-4 shadow-sm ring-0 hover:ring-1 hover:ring-green-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 overflow-hidden relative">
 
                             <!-- Badge -->
                             <div
-                                class="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold z-10">
+                                class="absolute top-2 left-2 bg-red-500 text-white text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-semibold z-10">
                                 Hot
                             </div>
 
-                            <!-- Product Image with FIXED RATIO -->
-                            <div class="aspect-[4/5] w-full bg-gray-100 rounded-lg overflow-hidden relative mb-4">
+                            <!-- IMAGE WRAPPER -->
+                            <div class="aspect-[4/5] w-full bg-gray-100 rounded-md overflow-hidden relative mb-3">
                                 @if ($product->images->count() > 0)
                                     <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
                                         alt="{{ $product->product_name }}"
@@ -163,67 +168,81 @@
                                 @else
                                     <div
                                         class="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
+                                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
                                         </svg>
                                     </div>
                                 @endif
                             </div>
 
-                            <!-- Product Details -->
-                            <div class="space-y-2">
-                                <!-- Name -->
-                                <h3 class="text-lg font-semibold text-gray-800 line-clamp-2">
-                                    {{ $product->product_name }}
+                            <!-- DETAILS -->
+                            <div class="space-y-1.5">
+
+                                <!-- NAME -->
+                                <h3
+                                    class="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2 leading-tight hover:text-green-600 transition">
+                                    <a href="{{ route('products.show', $product) }}">{{ $product->product_name }}</a>
                                 </h3>
 
-                                <!-- Rating -->
+                                <!-- RATING -->
                                 <div class="flex items-center space-x-1">
                                     <div class="flex text-yellow-400">
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if ($i <= round($product->reviews_avg_rating ?? 0))
-                                                <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
+                                                <svg class="w-3 h-3 fill-current sm:w-4 sm:h-4" viewBox="0 0 20 20">
                                                     <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                    </path>
                                                 </svg>
                                             @else
-                                                <svg class="w-3 h-3 fill-gray-300" viewBox="0 0 20 20">
+                                                <svg class="w-3 h-3 fill-gray-300 sm:w-4 sm:h-4" viewBox="0 0 20 20">
                                                     <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                    </path>
                                                 </svg>
                                             @endif
                                         @endfor
                                     </div>
-                                    <span class="text-sm text-gray-500">
+
+                                    <span class="text-xs sm:text-sm text-gray-500">
                                         ({{ number_format($product->reviews_avg_rating ?? 0, 1) }})
                                     </span>
                                 </div>
 
-                                <!-- Brand -->
-                                <p class="text-sm text-gray-600">
+                                <!-- BRAND -->
+                                <p class="text-xs sm:text-sm text-gray-600">
                                     Brand:
-                                    <span class="text-teal-600 hover:text-teal-700 font-medium cursor-pointer">
-                                        FreshFarm
-                                    </span>
+                                    <span
+                                        class="text-teal-600 hover:text-teal-700 font-medium cursor-pointer">FreshFarm</span>
                                 </p>
 
-                                <!-- Price + Button -->
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xl font-bold text-green-600">
+                                <!-- PRICE & BUTTON -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+
+                                    <span class="text-lg sm:text-xl font-bold text-green-600">
                                         Rp {{ number_format($product->sell_price, 0, ',', '.') }}
                                     </span>
 
-                                    <button
-                                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-1 transition">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13v8a2 2 0 002 2h10a2 2 0 002-2v-3">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium">Add</span>
-                                    </button>
+                                    <form method="POST" action="{{ route('cart.add', $product) }}">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+
+                                        <button type="submit"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-md flex items-center justify-center space-x-1 transition text-xs sm:text-sm">
+
+                                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13v8a2 2 0 002 2h10a2 2 0 002-2v-3">
+                                                </path>
+                                            </svg>
+
+                                            <span class="font-medium">Add</span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

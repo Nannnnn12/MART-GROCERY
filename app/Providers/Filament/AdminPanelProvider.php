@@ -43,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
                 // AccountWidget::class,
                 // FilamentInfoWidget::class,
                 \App\Filament\Widgets\StatsOverview::class,
+                \App\Filament\Widgets\IncomeChart::class,
                 \App\Filament\Widgets\OrdersChart::class,
                 \App\Filament\Widgets\RecentOrders::class,
             ])

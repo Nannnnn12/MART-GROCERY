@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const categoriesSwiper = new Swiper('.categoriesSwiper', {
-        slidesPerView: 1,
-        spaceBetween: 12,
+        slidesPerView: 3,
+        spaceBetween: 8,
         autoHeight: false,
         navigation: {
             nextEl: '.categories-next',
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             1280: { // xl
                 slidesPerView: 6,
-                spaceBetween: 18,
+                spaceBetween: 26,
             },
         },
         loop: true,
