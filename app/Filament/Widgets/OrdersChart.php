@@ -10,36 +10,52 @@ class OrdersChart extends ChartWidget
 {
     protected static ?int $sort = 2;
 
+    protected $listeners = ['pendapatan-filter-updated' => '$refresh'];
+
     public function getHeading(): ?string
     {
-        return 'Grafik Pesanan Per Bulan';
-    }
-
-    public function getColumnSpan(): int
-    {
-        return 1;
+        return 'Grafik Pesanan';
     }
 
     protected function getData(): array
     {
-        $data = [];
+        $filters   = session('pendapatan_filter', []);
+        $startDate = $filters['startDate'] ?? null;
+        $endDate   = $filters['endDate'] ?? null;
+        $year      = $filters['year'] ?? null;
 
-        // Get data for the last 12 months
-        for ($i = 11; $i >= 0; $i--) {
-            $date = Carbon::now()->subMonths($i);
-            $count = Transaction::whereYear('created_at', $date->year)
-                ->whereMonth('created_at', $date->month)
-                ->count();
-            $data['labels'][] = $date->format('M Y');
-            $data['datasets'][0]['data'][] = $count;
+        $labels = [];
+        $values = [];
+
+        $query = Transaction::query();
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        } elseif ($year) {
+            $query->whereYear('created_at', $year);
         }
 
-        $data['datasets'][0]['label'] = 'Orders';
-        $data['datasets'][0]['backgroundColor'] = 'rgba(54, 162, 235, 0.2)';
-        $data['datasets'][0]['borderColor'] = 'rgba(54, 162, 235, 1)';
-        $data['datasets'][0]['borderWidth'] = 1;
+        for ($i = 11; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $labels[] = $date->format('M Y');
+            $values[] = (clone $query)
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+        }
 
-        return $data;
+        return [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Total Orders',
+                    'data' => $values,
+                    'backgroundColor' => 'rgba(59,130,246,0.5)',
+                    'borderColor' => 'rgba(59,130,246,1)',
+                    'borderWidth' => 1,
+                ],
+            ],
+        ];
     }
 
     protected function getType(): string
