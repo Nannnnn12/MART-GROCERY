@@ -284,7 +284,7 @@
 
                         </div>
                         <div id="categories-list" class="space-y-2">
-                            <a href="#"
+                            <a href="{{ route('products.index') }}"
                                 class="category-item active flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-green-600 text-white rounded-lg text-sm sm:text-base">
                                 <span class="font-medium">All Categories</span>
                                 <span

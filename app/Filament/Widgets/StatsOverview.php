@@ -8,11 +8,11 @@ use App\Models\TransactionItem;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
     protected $listeners = ['pendapatan-filter-updated' => '$refresh'];
-
     protected static ?int $sort = 1;
 
     protected function getStats(): array
@@ -20,89 +20,113 @@ class StatsOverview extends BaseWidget
         $filters   = session('pendapatan_filter', []);
         $startDate = $filters['startDate'] ?? null;
         $endDate   = $filters['endDate'] ?? null;
+        $year      = $filters['year'] ?? null;
+        $month     = $filters['month'] ?? null;
 
         // =====================
-        // BASE QUERY (ALL TIME)
+        // BASE QUERY
         // =====================
         $ordersQuery = Transaction::query();
         $incomeQuery = Transaction::where('status', 'delivered');
 
         // =====================
-        // DATE FILTER (OPTIONAL)
+        // FILTER
         // =====================
         if ($startDate && $endDate) {
             $ordersQuery->whereBetween('created_at', [$startDate, $endDate]);
             $incomeQuery->whereBetween('created_at', [$startDate, $endDate]);
 
-            $ordersDescription = 'Total order dalam periode';
-            $incomeLabel       = 'Income Periode';
-            $incomeDescription = 'Dari ' .
-                Carbon::parse($startDate)->translatedFormat('d F Y') .
-                ' sampai ' .
+            $rangeLabel = Carbon::parse($startDate)->translatedFormat('d F Y')
+                . ' - ' .
                 Carbon::parse($endDate)->translatedFormat('d F Y');
 
-            $profitRangeLabel = $incomeDescription;
+            $ordersDescription = 'Order periode';
+            $incomeLabel = 'Income Periode';
+            $incomeDescription = $rangeLabel;
+            $profitDescription = $rangeLabel;
+
+        } elseif ($year && $month) {
+            $ordersQuery->whereYear('created_at', $year)->whereMonth('created_at', $month);
+            $incomeQuery->whereYear('created_at', $year)->whereMonth('created_at', $month);
+
+            $date = Carbon::create($year, $month, 1)->translatedFormat('F Y');
+
+            $ordersDescription = 'Order bulan ' . $date;
+            $incomeLabel = 'Income Bulanan';
+            $incomeDescription = $date;
+            $profitDescription = $date;
+
+        } elseif ($year) {
+            $ordersQuery->whereYear('created_at', $year);
+            $incomeQuery->whereYear('created_at', $year);
+
+            $ordersDescription = 'Order tahun ' . $year;
+            $incomeLabel = 'Income Tahunan';
+            $incomeDescription = 'Tahun ' . $year;
+            $profitDescription = 'Tahun ' . $year;
+
         } else {
-            // DEFAULT = SEMUA DATA
-            $ordersDescription = 'Total seluruh order';
-            $incomeLabel       = 'Total Income';
+            $ordersDescription = 'Seluruh order';
+            $incomeLabel = 'Total Income';
             $incomeDescription = 'Semua periode';
-            $profitRangeLabel  = 'Semua periode';
+            $profitDescription = 'Semua periode';
         }
 
         // =====================
-        // DATA
+        // DATA UTAMA
         // =====================
         $totalProducts = Product::count();
         $totalOrders   = $ordersQuery->count();
-        $income        = $incomeQuery->sum('total');
+
+        // ✅ TOTAL INCOME = total - shipping_cost
+        $income = $incomeQuery
+            ->selectRaw('SUM(total - shipping_cost) as income')
+            ->value('income') ?? 0;
 
         // =====================
-        // PROFIT
+        // PROFIT (TANPA SHIPPING COST)
         // =====================
-        $profitQuery = TransactionItem::join(
-            'transactions',
-            'transaction_items.transaction_id',
-            '=',
-            'transactions.id'
-        )
-            ->join(
-                'products',
-                'transaction_items.product_id',
-                '=',
-                'products.id'
-            )
+        $profitQuery = TransactionItem::query()
+            ->join('transactions', 'transaction_items.transaction_id', '=', 'transactions.id')
+            ->join('products', 'transaction_items.product_id', '=', 'products.id')
             ->where('transactions.status', 'delivered');
 
+        // APPLY FILTER SAMA
         if ($startDate && $endDate) {
             $profitQuery->whereBetween('transactions.created_at', [$startDate, $endDate]);
+        } elseif ($year && $month) {
+            $profitQuery->whereYear('transactions.created_at', $year)
+                ->whereMonth('transactions.created_at', $month);
+        } elseif ($year) {
+            $profitQuery->whereYear('transactions.created_at', $year);
         }
 
+        // ✅ PROFIT MURNI
         $profit = $profitQuery
-            ->selectRaw('SUM((products.sell_price - products.purchase_price) * transaction_items.quantity) as total_profit')
-            ->value('total_profit') ?? 0;
+            ->selectRaw(
+                'SUM((products.sell_price - products.purchase_price) * transaction_items.quantity) as profit'
+            )
+            ->value('profit') ?? 0;
 
         // =====================
         // STATS
         // =====================
         return [
             Stat::make('Total Products', $totalProducts)
-                ->description('Total Produk Tersedia')
-                ->descriptionIcon('heroicon-m-cube')
+                ->description('Produk tersedia')
                 ->color('success'),
 
             Stat::make('Total Orders', $totalOrders)
                 ->description($ordersDescription)
-                ->descriptionIcon('heroicon-m-shopping-bag')
                 ->color('primary'),
 
             Stat::make($incomeLabel, 'Rp ' . number_format($income, 0, ',', '.'))
-                ->icon('heroicon-o-banknotes')
-                ->color('success')
-                ->description($incomeDescription),
+                ->description($incomeDescription)
+                ->color('success'),
 
             Stat::make('Total Profit', 'Rp ' . number_format($profit, 0, ',', '.'))
-                ->description($profitRangeLabel),
+                ->description($profitDescription)
+                ->color('warning'),
         ];
     }
 }

@@ -23,6 +23,12 @@ class IncomesTable
                 if (!empty($filter['endDate'])) {
                     $query->whereDate('created_at', '<=', $filter['endDate']);
                 }
+                if (!empty($filter['year'])) {
+                    $query->whereYear('created_at', $filter['year']);
+                }
+                if (!empty($filter['month'])) {
+                    $query->whereMonth('created_at', $filter['month']);
+                }
                 return $query->latest();
             })
             ->columns([
@@ -35,12 +41,17 @@ class IncomesTable
                 TextColumn::make('total')
                     ->money('IDR')
                     ->sortable(),
+                TextColumn::make('net_total')
+                    ->label('Net Total')
+                    ->money('IDR')
+                    ->getStateUsing(fn ($record) => $record->total - $record->shipping_cost),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->paginated(10);
+            ->paginated(10)
+            ->recordUrl(fn ($record) => route('filament.admin.resources.transactions.edit', ['record' => $record->id]));
     }
 }

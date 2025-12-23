@@ -259,101 +259,105 @@
                             @endif
                         @elseif ($subTab == 'lihat_review')
                             {{-- 🔹 Tampilkan reviews --}}
-                            <div class="bg-green-50 rounded-2xl shadow-lg p-8">
-                                <div class="flex items-center justify-between mb-8">
-                                    <div>
-                                        <h2 class="text-3xl font-bold text-gray-900 mb-2">Ulasan Produk</h2>
-                                        <p class="text-gray-600">{{ $filteredItems->count() }} ulasan</p>
+                            <div class="space-y-6">
+                                <div class="bg-green-50 rounded-2xl shadow-lg p-8">
+                                    <div class="flex items-center justify-between mb-8">
+                                        <div>
+                                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Ulasan Produk</h2>
+                                            <p class="text-gray-600">{{ $filteredItems->count() }} ulasan</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="space-y-6">
-                                    @foreach ($filteredItems as $data)
-                                        <div class="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0 mb-2">
-                                            <div class="flex items-start space-x-4 mb-4">
-                                                <!-- User Avatar -->
-                                                <div
-                                                    class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                                    <span
-                                                        class="text-white font-semibold text-lg">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                                </div>
-
-                                                <!-- Review Content -->
-                                                <div class="flex-1 min-w-0">
-                                                    <div class="flex items-center justify-between mb-2">
-                                                        <div class="flex items-center space-x-3">
-                                                            <h4 class="text-lg font-semibold text-gray-900">
-                                                                {{ auth()->user()->name }}
-                                                            </h4>
-                                                            <div class="flex text-yellow-400">
-                                                                @for ($i = 1; $i <= 5; $i++)
-                                                                    @if ($i <= $data['review']->rating)
-                                                                        <svg class="w-4 h-4 fill-current"
-                                                                            viewBox="0 0 20 20">
-                                                                            <path
-                                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                                        </svg>
-                                                                    @else
-                                                                        <svg class="w-4 h-4 fill-gray-300"
-                                                                            viewBox="0 0 20 20">
-                                                                            <path
-                                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                                        </svg>
-                                                                    @endif
-                                                                @endfor
-                                                            </div>
-                                                        </div>
+                                    <div class="space-y-6">
+                                        @foreach ($filteredItems as $data)
+                                            <div class="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0 mb-2">
+                                                <div class="flex items-start space-x-4 mb-4">
+                                                    <!-- User Avatar -->
+                                                    <div
+                                                        class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
                                                         <span
-                                                            class="text-sm text-gray-500">{{ $data['review']->created_at->setTimezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y') }}
-                                                        </span>
+                                                            class="text-white font-semibold text-lg">{{ substr(auth()->user()->name, 0, 1) }}</span>
                                                     </div>
 
-                                                    <p class="text-gray-700 leading-relaxed mb-4">
-                                                        {{ $data['review']->comment }}</p>
-
-                                                    @if ($data['review']->image)
-                                                        <div class="mt-4">
-                                                            <img src="{{ $data['review']->image_url }}"
-                                                                alt="Review image"
-                                                                class="max-w-xs h-auto rounded-lg shadow-md">
+                                                    <!-- Review Content -->
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-center justify-between mb-2">
+                                                            <div class="flex items-center space-x-3">
+                                                                <h4 class="text-lg font-semibold text-gray-900">
+                                                                    {{ auth()->user()->name }}
+                                                                </h4>
+                                                                <div class="flex text-yellow-400">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        @if ($i <= $data['review']->rating)
+                                                                            <svg class="w-4 h-4 fill-current"
+                                                                                viewBox="0 0 20 20">
+                                                                                <path
+                                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                            </svg>
+                                                                        @else
+                                                                            <svg class="w-4 h-4 fill-gray-300"
+                                                                                viewBox="0 0 20 20">
+                                                                                <path
+                                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                            </svg>
+                                                                        @endif
+                                                                    @endfor
+                                                                </div>
+                                                            </div>
+                                                            <span
+                                                                class="text-sm text-gray-500">{{ $data['review']->created_at->setTimezone('Asia/Jakarta')->locale('id')->translatedFormat('d F Y') }}
+                                                            </span>
                                                         </div>
-                                                    @endif
 
-                                                    <!-- Product Info -->
-                                                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
-                                                        <div class="flex items-center space-x-3">
-                                                            @if ($data['item']->product->images->count() > 0)
-                                                                <a href="{{ route('products.show', $data['item']->product) }}"
-                                                                    class="flex-shrink-0">
-                                                                    <img src="{{ asset('storage/' . $data['item']->product->images->first()->image_path) }}"
-                                                                        alt="{{ $data['item']->product->product_name }}"
-                                                                        class="w-12 h-12 object-cover rounded-lg hover:opacity-80 transition-opacity">
-                                                                </a>
-                                                            @else
-                                                                <a href="{{ route('products.show', $data['item']->product) }}"
-                                                                    class="flex-shrink-0">
-                                                                    <div
-                                                                        class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-lg">
-                                                                        <svg class="w-6 h-6 text-gray-400" fill="none"
-                                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round" stroke-width="2"
-                                                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                        </svg>
-                                                                    </div>
-                                                                </a>
-                                                            @endif
-                                                            <div>
-                                                                <p class="text-sm text-gray-600">Produk: <a
-                                                                        href="{{ route('products.show', $data['item']->product) }}"
-                                                                        class="font-medium text-blue-600 hover:text-blue-800">{{ $data['item']->product->product_name }}</a>
-                                                                </p>
+                                                        <p class="text-gray-700 leading-relaxed mb-4">
+                                                            {{ $data['review']->comment }}</p>
+
+                                                        @if ($data['review']->image)
+                                                            <div class="mt-4">
+                                                                <img src="{{ $data['review']->image_url }}"
+                                                                    alt="Review image"
+                                                                    class="max-w-xs h-auto rounded-lg shadow-md">
+                                                            </div>
+                                                        @endif
+
+                                                        <!-- Product Info -->
+                                                        <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                                            <div class="flex items-center space-x-3">
+                                                                @if ($data['item']->product->images->count() > 0)
+                                                                    <a href="{{ route('products.show', $data['item']->product) }}"
+                                                                        class="flex-shrink-0">
+                                                                        <img src="{{ asset('storage/' . $data['item']->product->images->first()->image_path) }}"
+                                                                            alt="{{ $data['item']->product->product_name }}"
+                                                                            class="w-12 h-12 object-cover rounded-lg hover:opacity-80 transition-opacity">
+                                                                    </a>
+                                                                @else
+                                                                    <a href="{{ route('products.show', $data['item']->product) }}"
+                                                                        class="flex-shrink-0">
+                                                                        <div
+                                                                            class="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-lg">
+                                                                            <svg class="w-6 h-6 text-gray-400"
+                                                                                fill="none" stroke="currentColor"
+                                                                                viewBox="0 0 24 24">
+                                                                                <path stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    stroke-width="2"
+                                                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                                            </svg>
+                                                                        </div>
+                                                                    </a>
+                                                                @endif
+                                                                <div>
+                                                                    <p class="text-sm text-gray-600">Produk: <a
+                                                                            href="{{ route('products.show', $data['item']->product) }}"
+                                                                            class="font-medium text-blue-600 hover:text-blue-800">{{ $data['item']->product->product_name }}</a>
+                                                                    </p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                    @endforeach
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -388,8 +392,7 @@
             @elseif($transaction->status == 'shipped') bg-indigo-100 text-indigo-700
             @elseif($transaction->status == 'delivered') bg-emerald-600 text-white
             @elseif($transaction->status == 'cancelled') bg-red-500 text-white
-            @else bg-gray-200 text-gray-700
-            @endif
+            @else bg-gray-200 text-gray-700 @endif
         ">
                                         @if ($transaction->status == 'belum_dibayar')
                                             Belum Dibayar
@@ -476,17 +479,17 @@
                 </div>
             @endif
         @else
-                <div class="text-center py-16">
-                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum ada pesanan</h3>
-                    <p class="text-gray-600 mb-6">Ketika Anda melakukan pesanan pertama, pesanan akan muncul di sini.</p>
+            <div class="text-center py-16">
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
                 </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum ada pesanan</h3>
+                <p class="text-gray-600 mb-6">Ketika Anda melakukan pesanan pertama, pesanan akan muncul di sini.</p>
+            </div>
             @endif
         </div>
     </div>

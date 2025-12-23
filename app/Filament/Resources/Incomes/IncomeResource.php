@@ -7,7 +7,7 @@ use App\Filament\Resources\Incomes\Pages\EditIncome;
 use App\Filament\Resources\Incomes\Pages\ListIncomes;
 use App\Filament\Resources\Incomes\Schemas\IncomeForm;
 use App\Filament\Resources\Incomes\Tables\IncomesTable;
-use App\Models\Income;
+use App\Models\Transaction;
 use BackedEnum;
 use Filament\Resources\Concerns\HasFiltersForm;
 use Filament\Resources\Resource;
