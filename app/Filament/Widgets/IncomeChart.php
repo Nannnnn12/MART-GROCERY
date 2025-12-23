@@ -105,6 +105,7 @@ class IncomeChart extends ChartWidget
                     'data' => $values,
                     'fill' => true, // ✅ FILL
                     'borderWidth' => 2,
+                    'tension' => 0.4, 
                 ],
             ],
         ];

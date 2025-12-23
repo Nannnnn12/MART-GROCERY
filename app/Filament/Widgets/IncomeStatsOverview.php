@@ -98,17 +98,17 @@ class IncomeStatsOverview extends StatsOverviewWidget
             Stat::make(
                 'Income Harian',
                 'Rp ' . number_format($incomeToday, 0, ',', '.')
-            )->description($dayLabel),
+            )->description($dayLabel)->chart(['10', '25', '50', '75', '50', '25', '10'])->color('danger'),
 
             Stat::make(
                 'Income Bulanan',
                 'Rp ' . number_format($incomeThisMonth, 0, ',', '.')
-            )->description($monthLabel),
+            )->description($monthLabel)->chart(['25', '50', '75', '100', '75', '50', '25'])->color('primary'),
 
             Stat::make(
                 'Income Tahunan',
                 'Rp ' . number_format($incomeThisYear, 0, ',', '.')
-            )->description($yearLabel),
+            )->description($yearLabel)->chart(['100', '75', '50', '75', '100', '125', '150'])->color('success'),
         ];
     }
 }

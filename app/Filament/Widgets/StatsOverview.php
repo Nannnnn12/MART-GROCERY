@@ -114,19 +114,19 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('Total Products', $totalProducts)
                 ->description('Produk tersedia')
-                ->color('success'),
+                ->color('success')->chart(['25', '30', '75', '20', '75', '50', '25']),
 
             Stat::make('Total Orders', $totalOrders)
                 ->description($ordersDescription)
-                ->color('primary'),
+                ->color('primary')->chart(['10', '30', '50', '70', '90', '70', '50']),
 
             Stat::make($incomeLabel, 'Rp ' . number_format($income, 0, ',', '.'))
                 ->description($incomeDescription)
-                ->color('success'),
+                ->color('success')->chart(['50', '75', '100', '125', '150', '125', '100']),
 
             Stat::make('Total Profit', 'Rp ' . number_format($profit, 0, ',', '.'))
                 ->description($profitDescription)
-                ->color('warning'),
+                ->color('warning')->chart(['20', '40', '60', '80', '100', '80', '60']),
         ];
     }
 }
