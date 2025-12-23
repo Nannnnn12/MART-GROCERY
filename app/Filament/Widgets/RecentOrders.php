@@ -49,6 +49,22 @@ class RecentOrders extends BaseWidget
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'shipped' => 'Shipped',
+                        'delivered' => 'Delivered',
+                        'cancelled' => 'Cancelled',
+                        'belum_dibayar' => 'Belum Dibayar',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn(Builder $query, $status): Builder => $query->where('status', $status),
+                        );
+                    }),
                 SelectFilter::make('year')
                     ->label('Year')
                     ->options(function () {

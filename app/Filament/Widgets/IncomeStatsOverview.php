@@ -6,41 +6,80 @@ use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
+use App\Models\Product;
+use Carbon\Carbon;
 
 class IncomeStatsOverview extends StatsOverviewWidget
 {
+    protected $listeners = ['pendapatan-filter-updated' => '$refresh'];
     protected static bool $isDiscovered = false;
 
     protected function getColumns(): int
     {
-        return 4;
+        return 3;
     }
 
     protected function getStats(): array
     {
-        $today     = now()->startOfDay();
 
-        $incomeToday  = Transaction::where('status', 'delivered')->whereDate('created_at', now())->sum('total');
-        $incomeThisMonth = Transaction::where('status', 'delivered')->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total');
-        $incomeThisYear = Transaction::where('status', 'delivered')->whereYear('created_at', now()->year)->sum('total');
-        $totalSales   = Transaction::where('status', 'delivered')->sum('total');
+
+        $filters   = session('pendapatan_filter', []);
+        $startDate = $filters['startDate'] ?? null;
+        $endDate   = $filters['endDate'] ?? null;
+
+        $baseQuery = Transaction::where('status', 'delivered');
+
+        if ($startDate && $endDate) {
+            $incomeToday = (clone $baseQuery)
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->sum('total');
+
+            $incomeThisMonth = $incomeToday;
+            $incomeThisYear  = $incomeToday;
+
+            $rangeLabel = 'Dari ' . Carbon::parse($startDate)->translatedFormat('d F Y') . ' sampai ' . Carbon::parse($endDate)->translatedFormat('d F Y');
+        } else {
+            // ================= DEFAULT / START DATE =================
+            $date = $startDate
+                ? Carbon::parse($startDate)
+                : now();
+
+            $incomeToday = (clone $baseQuery)
+                ->whereDate('created_at', $date)
+                ->sum('total');
+
+            $incomeThisMonth = (clone $baseQuery)
+                ->whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->sum('total');
+
+            $incomeThisYear = (clone $baseQuery)
+                ->whereYear('created_at', $date->year)
+                ->sum('total');
+
+            $dayLabel   = 'Dari ' . $date->translatedFormat('d F Y') . ' sampai ' . $date->translatedFormat('d F Y');
+            $monthLabel = 'Dari ' . $date->startOfMonth()->translatedFormat('d F Y') . ' sampai ' . $date->endOfMonth()->translatedFormat('d F Y');
+            $yearLabel  = 'Dari ' . $date->startOfYear()->translatedFormat('d F Y') . ' sampai ' . $date->endOfYear()->translatedFormat('d F Y');
+        }
 
         return [
-            Stat::make('Income Hari Ini', 'Rp ' . number_format($incomeToday, 0, ',', '.'))
-                ->icon('heroicon-o-banknotes')
-                ->color('success'),
+            Stat::make(
+                'Income Harian',
+                'Rp ' . number_format($incomeToday, 0, ',', '.')
+            )
+                ->description($startDate && $endDate ? $rangeLabel : $dayLabel),
 
-            Stat::make('Income Bulan Ini', 'Rp ' . number_format($incomeThisMonth, 0, ',', '.'))
-                ->icon('heroicon-o-calendar-days')
-                ->color('info'),
+            Stat::make(
+                'Income Bulanan',
+                'Rp ' . number_format($incomeThisMonth, 0, ',', '.')
+            )
+                ->description($startDate && $endDate ? $rangeLabel : $monthLabel),
 
-            Stat::make('Income Tahun Ini', 'Rp ' . number_format($incomeThisYear, 0, ',', '.'))
-                ->icon('heroicon-o-chart-bar')
-                ->color('primary'),
-
-            Stat::make('Total Pendapatan', 'Rp ' . number_format($totalSales, 0, ',', '.'))
-                ->icon('heroicon-o-currency-dollar')
-                ->color('success'),
+            Stat::make(
+                'Income Tahunan',
+                'Rp ' . number_format($incomeThisYear, 0, ',', '.')
+            )
+                ->description($startDate && $endDate ? $rangeLabel : $yearLabel),
         ];
     }
 }

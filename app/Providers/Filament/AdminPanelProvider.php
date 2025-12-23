@@ -7,7 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use App\Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -38,14 +38,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->pages([
                 Dashboard::class,
-            ])
-            ->widgets([
-                // AccountWidget::class,
-                // FilamentInfoWidget::class,
-                \App\Filament\Widgets\StatsOverview::class,
-                \App\Filament\Widgets\IncomeChart::class,
-                \App\Filament\Widgets\OrdersChart::class,
-                \App\Filament\Widgets\RecentOrders::class,
             ])
             ->middleware([
                 EncryptCookies::class,
